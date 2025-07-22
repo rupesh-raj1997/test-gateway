@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { COMMENTS_SERVICE } from './utils/constants';
 import { ClientProxy } from '@nestjs/microservices';
@@ -20,6 +20,29 @@ export class AppController {
     return resp;
   }
 
+  @Get('comment/filter')
+  async filterComment(@Body() filters: any) {
+    console.log("in gateway ", filters)
+    return this.client.send({ cmd: "comment.filter" }, filters)
+  }
+
+  @Get('comment/thread')
+  async allThread(
+    @Query('tenantId') tenantId: string,
+    @Query('formId') formId: string,
+    @Query('objectId') objectId: string
+  ) {
+    return await this.client.send(
+      { cmd: 'comment.all' },
+      { tenantId, formId, objectId }
+    );
+  }
+
+  @Get('comment/thread/:id')
+  async commentThread(@Param('id') id: string) {
+    const resp = await this.client.send({ cmd: 'comment.thread' }, id);
+    return resp;
+  }
 
   @Post('comment/')
   async createNewComment(@Body() body: any) {
@@ -49,9 +72,4 @@ export class AppController {
     return resp;
   }
 
-  @Get('comment/thread/:id')
-  async commentThread(@Param('id') id: string) {
-    const resp = await this.client.send({ cmd: 'comment.thread' }, id);
-    return resp;
-  }
 }
