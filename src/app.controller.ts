@@ -20,10 +20,15 @@ export class AppController {
     return resp;
   }
 
-  @Get('comment/filter')
+  @Post('comment/filter')
   async filterComment(@Body() filters: any) {
     console.log("in gateway ", filters)
     return this.client.send({ cmd: "comment.filter" }, filters)
+  }
+
+  @Post('comment/react')
+  async reactComment(@Body() body: any) {
+    return this.client.send({ cmd: "comment.react.create" }, body)
   }
 
   @Get('comment/thread')
