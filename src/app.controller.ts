@@ -28,18 +28,19 @@ export class AppController {
 
   @Post('comment/react')
   async reactComment(@Body() body: any) {
-    return this.client.send({ cmd: "comment.react.create" }, body)
+    return this.client.send({ cmd: "comment.react-create" }, body)
   }
 
   @Get('comment/thread')
   async allThread(
     @Query('tenantId') tenantId: string,
     @Query('formId') formId: string,
-    @Query('objectId') objectId: string
+    @Query('objectId') objectId: string,
+    @Query('userId') userId: string,
   ) {
     return await this.client.send(
       { cmd: 'comment.all' },
-      { tenantId, formId, objectId }
+      { tenantId, formId, objectId, userId }
     );
   }
 
@@ -62,7 +63,7 @@ export class AppController {
 
   @Get('comment/:id')
   async findOneComment(@Param('id') id: string) {
-    return this.client.send({ cmd: 'comment.findOne' }, id);
+    return this.client.send({ cmd: 'comment.find-one' }, id);
   }
 
   @Patch('comment/:id')
