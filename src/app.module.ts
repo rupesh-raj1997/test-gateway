@@ -6,7 +6,7 @@ import { COMMENTS_SERVICE, COMMENTS_SERVICE_HOST, COMMENTS_SERVICE_PORT } from '
 
 @Module({
   imports: [
-     ClientsModule.register([
+    ClientsModule.register([
       {
         name: COMMENTS_SERVICE,
         transport: Transport.TCP,
@@ -20,4 +20,4 @@ import { COMMENTS_SERVICE, COMMENTS_SERVICE_HOST, COMMENTS_SERVICE_PORT } from '
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
